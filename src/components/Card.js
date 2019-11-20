@@ -8,23 +8,21 @@ import React from 'react';
 export default function ImgMediaCard(props) {
 
   return (
-    <Card>
+    <Card style={{ height: "100%" }}>
       <CardActionArea>
         <a href={props.url} target="_blank">
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://lh3.googleusercontent.com/QxpLwOvSGkVQECug9WzsIRL6_SBwox6McBLtMcrH8-K0ZUPMioL_Iru5PCyhVmbx2ypIb_N3XxmlcW7-2xauuHv_nO1VbGWvQTJE0NKH=s660"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            
-          </Typography>
-        </CardContent>
-        </a>  
+          <CardMedia
+            component="img"
+            style={{ height: 180 }}
+            image={props.image}
+            title="Hello World"
+          />
+          <CardContent style={{ height: "100%" }}>
+            <Typography variant="subtitle1" color="textPrimary">
+              {props.title}
+            </Typography>
+          </CardContent>
+        </a>
       </CardActionArea>
     </Card>
   );

@@ -1,9 +1,10 @@
-import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import RecommendationsService from '../utils/api';
-import Axios from "axios";
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
 
 
 const recommendationsService = new RecommendationsService();
@@ -15,16 +16,13 @@ export default class TwitterForm extends React.Component {
       twitterHandle: '',
       mediaType: "news"
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleChangeMediaType = this.handleChangeMediaType.bind(this);
     this.sendExternalData = this.sendExternalData.bind(this);
     this.sendLoadingSignal = this.sendLoadingSignal.bind(this);
   }
-
-  // selected = false;
-  // setSelected(sel) { this.selected = sel; }
 
   sendLoadingSignal = (isLoading) => {
     this.props.parentCallbackLoading(isLoading);
@@ -38,77 +36,55 @@ export default class TwitterForm extends React.Component {
     this.setState({ twitterHandle: event.target.value });
   }
 
+  handleKeyPress(event) {
+    if (event.keyCode == 13) {
+      this.handleSubmit(event);
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     this.sendLoadingSignal(true);
     recommendationsService.getNewsRecs(this.state.twitterHandle)
-    .then((res) => {
+      .then((res) => {
         this.sendLoadingSignal(false);
         console.log(res.data);
         this.sendExternalData(res.data);
-    }).catch((err) => {
+      }).catch((err) => {
         this.sendLoadingSignal(false);
-        throw(err);
-    });
+        throw (err);
+      });
   }
 
-  handleChangeMediaType(event){
-    this.setState({mediaType: event.target.value});
+  handleChangeMediaType(event) {
+    this.setState({ mediaType: event.target.value });
   }
 
   render() {
     return (
-      <div>
-        {/* <Grid item>
-          <ToggleButtonGroup size="medium" value={1} exclusive onChange={this.handleChangeMediaType}>
-            <ToggleButton key={1} value="left"
-              selected={this.selected}
-              onChange={() => {
-              this.setSelected(!this.selected);
-              }}>
-              asdf
-            </ToggleButton>,
-            <ToggleButton key={2} value="center">
-              asdf
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Grid> */}
-        {/* <Grid item>
-            <ButtonGroup
-              color="secondary"
-              size="large"
-              aria-label="large outlined secondary button group"
-            >
-              <Button>News</Button>
-              <Button>TV</Button>
-            </ButtonGroup>
-          </Grid> */}
-        {/* <TextField
-          label="With normal TextField"
-          id="outlined-start-adornment"
-          // className={clsx(classes.margin, classes.textField)}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
-          }}
-          variant="outlined"
-        /> */}
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Twitter Handle:
-            <input type="text" value={this.state.twitterHandle} onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="Submit"/>
-        </form>
-      {/* <div>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Media Type</FormLabel>
-          <RadioGroup aria-label="media" name="media1" value = {this.state.mediaType} onChange={this.handleChangeMediaType}>
-            <FormControlLabel value="news" control={<Radio />} label="News Stories" />
-            <FormControlLabel value="tv" control={<Radio />} label="TV Shows" /> 
-          </RadioGroup>
-        </FormControl>
-      </div> */}
-      </div>
-      );
+      <form style={{ display: 'flex', flexWrap: 'wrap' }} noValidate autoComplete="off">
+        <div alignItems="center">
+          <TextField
+            id="outlined-basic"
+            style={{ width: 200 }}
+            label="Twitter Handle"
+            margin="normal"
+            variant="outlined"
+            value={this.state.twitterHandle}
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyPress}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment>
+                  <IconButton>
+                    <SearchIcon onClick={this.handleSubmit} />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+        </div>
+      </form>
+    );
   }
 }
