@@ -5,6 +5,12 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 
 const recommendationsService = new RecommendationsService();
@@ -58,10 +64,12 @@ export default class TwitterForm extends React.Component {
 
   handleChangeMediaType(event) {
     this.setState({ mediaType: event.target.value });
+    alert(event.target.value);
   }
 
   render() {
     return (
+      <div>
       <form style={{ display: 'flex', flexWrap: 'wrap' }} noValidate autoComplete="off">
         <div alignItems="center">
           <TextField
@@ -85,6 +93,16 @@ export default class TwitterForm extends React.Component {
           />
         </div>
       </form>
+      <div alignItems = "center">
+      <FormControl component="fieldset" >
+        <FormLabel component="legend">Recommendation Type</FormLabel>
+        <RadioGroup aria-label="rec_type" name="rec_type1" value={this.value} onChange={this.handleChangeMediaType}>
+          <FormControlLabel value="news" control={<Radio />} label="News" />
+          <FormControlLabel value="tv" control={<Radio />} label="TV" />
+        </RadioGroup>
+      </FormControl>
+      </div>
+      </div>
     );
   }
 }
