@@ -64,7 +64,6 @@ export default class TwitterForm extends React.Component {
 
   handleChangeMediaType(event) {
     this.setState({ mediaType: event.target.value });
-    alert(event.target.value);
   }
 
   render() {
